@@ -9,7 +9,7 @@ interface IProps {
 const Link: React.FC<IProps> = ({ style }) => {
   return (
     <LottieView
-      source={require('../lottie/link.json')}
+      source={require('../../lottie/link.json')}
       autoPlay
       style={[styles.view, style]}
       loop={false}
