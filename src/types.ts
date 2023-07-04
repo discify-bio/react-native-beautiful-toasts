@@ -1,6 +1,6 @@
 export interface ShowProperties {
   text: string
-  icon: 'success' | 'warning' | 'error'
+  icon: 'success' | 'warning' | 'error' | 'link'
 }
 
 export interface ToastMethods {

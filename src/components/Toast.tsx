@@ -6,6 +6,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ShowProperties } from '../types'
 import Warning from '../animations/Warning'
 import Error from '../animations/Error'
+import Link from '../animations/Link'
 
 interface IProps {
   value: SharedValue<number>
@@ -40,6 +41,8 @@ const Toast: React.FC<IProps> = ({
         return <Error/>
       case 'warning':
         return <Warning/>
+      case 'link':
+        return <Link/>
     }
   }
   
