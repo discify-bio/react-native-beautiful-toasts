@@ -9,7 +9,7 @@ interface IProps {
 const Error: React.FC<IProps> = ({ style }) => {
   return (
     <LottieView
-      source={require('../lottie/error.json')}
+      source={require('../../lottie/error.json')}
       autoPlay
       style={[styles.view, style]}
       loop={false}
