@@ -7,6 +7,7 @@ import { ShowProperties } from '../types'
 import Warning from '../animations/Warning'
 import Error from '../animations/Error'
 import Link from '../animations/Link'
+import Copy from '../animations/Copy'
 
 interface IProps {
   value: SharedValue<number>
@@ -41,6 +42,8 @@ const Toast: React.FC<IProps> = ({
         return <Error/>
       case 'warning':
         return <Warning/>
+      case 'copy':
+        return <Copy/>
       case 'link':
         return <Link/>
     }
