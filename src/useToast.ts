@@ -5,7 +5,7 @@ const useToast = () => {
   const toastContext = useContext(Context)
   const toast = useMemo(() => {
     return toastContext.current
-  }, [toastContext])
+  }, [toastContext.current])
   return toast
 }
 
