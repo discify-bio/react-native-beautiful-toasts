@@ -5,6 +5,7 @@ interface IProps {
         font?: string;
         paddingHorizontal?: number;
         backgroundColor?: string;
+        paddingBottom?: number;
     };
 }
 declare const Provider: React.FC<PropsWithChildren<IProps>>;

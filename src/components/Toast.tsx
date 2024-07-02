@@ -13,7 +13,8 @@ interface IProps {
   value: SharedValue<number>
   text: string | null
   icon: ShowProperties['icon'] | null
-  padding?: number
+  paddingHorizontal?: number
+  paddingBottom?: number
   font?: string
   backgroundColor?: string
 }
@@ -23,7 +24,8 @@ const Toast: React.FC<IProps> = ({
   text,
   icon,
   font,
-  padding,
+  paddingHorizontal,
+  paddingBottom,
   backgroundColor
 }) => {
   const insets = useSafeAreaInsets()
@@ -54,8 +56,8 @@ const Toast: React.FC<IProps> = ({
       style={[
         {
           ...styles.layout,
-          bottom: insets.bottom + styles.layout.bottom,
-          paddingHorizontal: padding
+          bottom: insets.bottom + (paddingBottom ?? 0),
+          paddingHorizontal
         },
         backgroundAnimation
       ]}

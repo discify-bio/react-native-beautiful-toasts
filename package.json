@@ -1,6 +1,6 @@
 {
   "name": "react-native-beautiful-toasts",
-  "version": "1.0.11",
+  "version": "1.0.12",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -25,6 +25,7 @@
     "react-native-safe-area-context": "*"
   },
   "devDependencies": {
-    "@types/react": "^18.2.14"
+    "@types/react": "^18.2.14",
+    "typescript": "^5.5.3"
   }
 }

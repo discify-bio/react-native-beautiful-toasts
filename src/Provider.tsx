@@ -11,6 +11,7 @@ interface IProps {
     font?: string
     paddingHorizontal?: number
     backgroundColor?: string
+    paddingBottom?: number
   }
 }
 
@@ -18,8 +19,6 @@ const Provider: React.FC<PropsWithChildren<IProps>> = ({
   children,
   config
 }) => {
-  const ref = useRef<ToastMethods>(null) as MutableRefObject<ToastMethods>
-
   const [isOpen, setIsOpen] = useState(false)
   const [text, setText] = useState<string | null>(null)
   const [icon, setIcon] = useState<ShowProperties['icon'] | null>(null)
@@ -54,6 +53,10 @@ const Provider: React.FC<PropsWithChildren<IProps>> = ({
       }))
     )
   }
+
+  const ref = useRef<ToastMethods>({
+    show: start
+  }) as MutableRefObject<ToastMethods>
   
   return (
     <Context.Provider
@@ -70,7 +73,8 @@ const Provider: React.FC<PropsWithChildren<IProps>> = ({
             text={text}
             icon={icon}
             key={String(isOpen)}
-            padding={config?.paddingHorizontal}
+            paddingHorizontal={config?.paddingHorizontal}
+            paddingBottom={config?.paddingBottom}
             font={config?.font}
             backgroundColor={config?.backgroundColor}
           />

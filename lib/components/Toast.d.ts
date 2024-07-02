@@ -5,7 +5,8 @@ interface IProps {
     value: SharedValue<number>;
     text: string | null;
     icon: ShowProperties['icon'] | null;
-    padding?: number;
+    paddingHorizontal?: number;
+    paddingBottom?: number;
     font?: string;
     backgroundColor?: string;
 }
