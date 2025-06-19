@@ -1,6 +1,6 @@
 import React from 'react'
 import { StyleSheet, Text, View } from 'react-native'
-import Animated, { SharedValue, useAnimatedStyle } from 'react-native-reanimated'
+import Animated, { interpolate, SharedValue, useAnimatedStyle } from 'react-native-reanimated'
 import Success from '../animations/Success'
 import { useSafeAreaInsets } from 'react-native-safe-area-context'
 import { ShowProperties } from '../types'
@@ -8,6 +8,7 @@ import Warning from '../animations/Warning'
 import Error from '../animations/Error'
 import Link from '../animations/Link'
 import Copy from '../animations/Copy'
+import { useReanimatedKeyboardAnimation } from 'react-native-keyboard-controller'
 
 interface IProps {
   value: SharedValue<number>
@@ -29,6 +30,7 @@ const Toast: React.FC<IProps> = ({
   backgroundColor
 }) => {
   const insets = useSafeAreaInsets()
+  const { height, progress } = useReanimatedKeyboardAnimation()
 
   const backgroundAnimation = useAnimatedStyle(() => {
     return {
@@ -50,15 +52,22 @@ const Toast: React.FC<IProps> = ({
         return <Link/>
     }
   }
+
+  const bottom = useAnimatedStyle(() => {
+    const interpolated = interpolate(progress.value, [0, 1], [insets.bottom, 0])
+    return {
+      bottom: ((-height.value + interpolated) + (paddingBottom ?? 0))
+    }
+  })
   
   return (
     <Animated.View
       style={[
         {
           ...styles.layout,
-          bottom: insets.bottom + (paddingBottom ?? 0),
           paddingHorizontal
         },
+        bottom,
         backgroundAnimation
       ]}
       pointerEvents='none'

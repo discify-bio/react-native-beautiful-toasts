@@ -1,6 +1,6 @@
 {
   "name": "react-native-beautiful-toasts",
-  "version": "1.0.12",
+  "version": "1.0.19",
   "description": "",
   "main": "./lib/index.js",
   "types": "./lib/index.d.ts",
@@ -22,7 +22,8 @@
     "react-native-gesture-handler": "*",
     "react-native-portalize": "*",
     "react-native-reanimated": "^3.0.0",
-    "react-native-safe-area-context": "*"
+    "react-native-safe-area-context": "*",
+    "react-native-keyboard-controller": "*"
   },
   "devDependencies": {
     "@types/react": "^18.2.14",
