@@ -56,7 +56,7 @@ const Toast: React.FC<IProps> = ({
   const bottom = useAnimatedStyle(() => {
     const interpolated = interpolate(progress.value, [0, 1], [insets.bottom, 0])
     return {
-      bottom: ((-height.value + interpolated) + (paddingBottom ?? 0))
+      bottom: (Math.abs(height.value) + interpolated) + (paddingBottom ?? 0)
     }
   })
   
