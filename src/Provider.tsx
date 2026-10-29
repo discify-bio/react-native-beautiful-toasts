@@ -1,16 +1,18 @@
 import React from 'react'
-import { MutableRefObject, PropsWithChildren, useEffect, useRef, useState } from 'react'
+import { PropsWithChildren, useCallback, useMemo, useRef, useState } from 'react'
+import { StyleSheet, View } from 'react-native'
 import Context from './Context'
 import { ShowProperties, ToastMethods } from './types'
-import { Host, Portal } from 'react-native-portalize'
 import Toast from './components/Toast'
-import { Easing, runOnJS, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated'
+import { Easing, useSharedValue, withDelay, withSequence, withTiming } from 'react-native-reanimated'
+import { scheduleOnRN } from 'react-native-worklets'
 
 interface IProps {
   config?: {
     font?: string
     paddingHorizontal?: number
     backgroundColor?: string
+    tintOpacity?: number
     paddingBottom?: number
   }
 }
@@ -19,28 +21,17 @@ const Provider: React.FC<PropsWithChildren<IProps>> = ({
   children,
   config
 }) => {
-  const [isOpen, setIsOpen] = useState(false)
-  const [text, setText] = useState<string | null>(null)
-  const [icon, setIcon] = useState<ShowProperties['icon'] | null>(null)
-
-  useEffect(() => {
-    ref.current = {
-      show: start
-    }
-  }, [])
-
+  const [toast, setToast] = useState<(ShowProperties & { id: number }) | null>(null)
+  const lastId = useRef(0)
   const value = useSharedValue(0)
 
-  const start = (properties: ShowProperties) => {
-    if (properties.text) setText(properties.text)
-    if (properties.icon) setIcon(properties.icon)
-    
-    startAnimation()
-  }
+  const hide = useCallback(() => setToast(null), [])
 
-  const startAnimation = () => {
-    setIsOpen(true)
-    value.value = withSequence(
+  const show = useCallback((properties: ShowProperties) => {
+    lastId.current += 1
+    setToast({ ...properties, id: lastId.current })
+
+    value.set(withSequence(
       withTiming(1, {
         easing: Easing.inOut(Easing.quad),
         duration: 350
@@ -48,41 +39,42 @@ const Provider: React.FC<PropsWithChildren<IProps>> = ({
       withDelay(2500, withTiming(0, {
         easing: Easing.inOut(Easing.quad),
         duration: 350
-      }, () => {
-        runOnJS(setIsOpen)(false)
+      }, finished => {
+        // A cancelled sequence still calls this with finished = false, e.g. when show() is called again mid-toast.
+        if (finished) scheduleOnRN(hide)
       }))
-    )
-  }
+    ))
+  }, [hide, value])
 
-  const ref = useRef<ToastMethods>({
-    show: start
-  }) as MutableRefObject<ToastMethods>
-  
+  const methods = useMemo<ToastMethods>(() => ({ show }), [show])
+
   return (
-    <Context.Provider
-      value={ref}
-    >
-      <Host
-        style={{
-          flex: 1
-        }}
-      >
-        <Portal>
+    <Context.Provider value={methods}>
+      <View style={styles.container}>
+        {children}
+        {toast && (
           <Toast
+            key={toast.id}
             value={value}
-            text={text}
-            icon={icon}
-            key={String(isOpen)}
+            text={toast.text}
+            icon={toast.icon}
+            numberOfLines={toast.numberOfLines}
             paddingHorizontal={config?.paddingHorizontal}
             paddingBottom={config?.paddingBottom}
             font={config?.font}
             backgroundColor={config?.backgroundColor}
+            tintOpacity={config?.tintOpacity}
           />
-        </Portal>
-        {children}
-      </Host>
+        )}
+      </View>
     </Context.Provider>
   )
 }
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1
+  }
+})
 
 export default Provider

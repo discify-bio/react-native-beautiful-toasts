@@ -1,11 +1,9 @@
-import { useContext, useMemo } from 'react'
+import { useContext } from 'react'
 import Context from './Context'
 
 const useToast = () => {
-  const toastContext = useContext(Context)
-  const toast = useMemo(() => {
-    return toastContext.current
-  }, [toastContext.current])
+  const toast = useContext(Context)
+  if (!toast) throw new Error('useToast must be used inside <Provider> from react-native-beautiful-toasts')
   return toast
 }
 

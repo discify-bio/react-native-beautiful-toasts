@@ -1,6 +1,6 @@
-import { createContext, MutableRefObject } from 'react'
+import { createContext } from 'react'
 import { ToastMethods } from './types'
 
-const Context = createContext<MutableRefObject<ToastMethods>>(null as any)
+const Context = createContext<ToastMethods | null>(null)
 
 export default Context

@@ -5,6 +5,7 @@ interface IProps {
         font?: string;
         paddingHorizontal?: number;
         backgroundColor?: string;
+        tintOpacity?: number;
         paddingBottom?: number;
     };
 }
